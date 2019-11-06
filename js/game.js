@@ -13,8 +13,8 @@ class Game {
     this.colorChange = 0;
     //Setting the time for game----------------------------------------------------------------------------------------
     this.gameTime = TOTAL_TIME;
-    this.gameTimeSec = '00';
-    this.gameTimeMin = '30';
+    this.gameTimeSec = '0';
+    this.gameTimeMin = '0';
     this.timerCounter = 0;
     this.dottedLine = [];
     this.timerColor = TIMER_COLOR[getRandomNumber(TIMER_COLOR.length - 1 , 0)];
@@ -661,8 +661,8 @@ class Game {
     this.gameTime = TOTAL_TIME;
     this.level = 1;
     this.colorChange = 0;
-    this.gameTimeSec = '00';
-    this.gameTimeMin = '30';
+    this.gameTimeSec = '0';
+    this.gameTimeMin = '0';
     this.timerCounter = 0;
     this.timerColor = TIMER_COLOR[getRandomNumber(TIMER_COLOR.length - 1 , 0)];
     this.gameStatus = 'inGame';

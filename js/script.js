@@ -132,7 +132,7 @@ function calc(value) {
 //my time calculator--------------------------------------------------------------------------------------------------
 function setTime(game) {
   if (game.gameTime <= 0){
-    game.gameTime = TOTAL_TIME;
+    game.gameStatus = "gameOver";
   }
   --game.gameTime;
   game.gameTimeSec = calc(game.gameTime%60);
