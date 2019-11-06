@@ -30,7 +30,7 @@ class Game {
     this.flagPowerUps = [];
     this.plus1Score = []; //for storing +1 symbol objects
     this.spriteSheet = new Image();
-    this.spriteSheet.src = 'images/sprite-sheet.png';
+    this.spriteSheet.src = 'static/images/sprite-sheet.png';
     this.ballsArray = [];
     this.ballsArray.push(new Ball(this.ctx,this));
     this.bbtanGameBot = new BbtanGameBot(this.ctx,this.ballsArray[0].x);
@@ -277,6 +277,7 @@ class Game {
       this.levelMap[0] = [0,0,0,0,0,0,0];
       this.gameStatus = 'inGame';
       this.checkTileMap();
+      requestAIAction(this);
     }
   }
 
@@ -827,6 +828,7 @@ function  draw() {
 
 //for shooting the ball click event listener-------------------------------------------------------------------------
 game.canvas.addEventListener('click',(evt)=> {
+  console.log(game, evt)
   shootBalls(game, evt);
   checkClickOperation(game, evt);
 });

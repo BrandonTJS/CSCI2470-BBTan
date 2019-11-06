@@ -125,6 +125,7 @@ class Ball {
       game.updateTileMap();
       game.flagPowerUps = [];
       game.shootStatus = false;
+      //requestAIAction();
     }
   }
 

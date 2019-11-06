@@ -13,7 +13,7 @@ class BbtanBgBot {
     this.ctx.strokeStyle = "#d7e163";
     this.ctx.fillStyle = "#d7e163";
     this.ctx.globalAlpha = this.opacityIndex;
-    this.bGBotImage.src = "images/bodyBackgroundBot.png";
+    this.bGBotImage.src = "static/images/bodyBackgroundBot.png";
     this.ctx.drawImage(
       this.bGBotImage,
       0,

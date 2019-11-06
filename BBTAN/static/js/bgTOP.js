@@ -14,7 +14,7 @@ class BbtanBgTop {
     this.ctx.strokeStyle = "#d7e163";
     this.ctx.fillStyle = "#d7e163";
     this.ctx.globalAlpha = this.opacityIndex;
-    this.bGTopImage.src = "images/bodyBackgroundTop.png";
+    this.bGTopImage.src = "static/images/bodyBackgroundTop.png";
     this.ctx.drawImage(
       this.bGTopImage,
       0,

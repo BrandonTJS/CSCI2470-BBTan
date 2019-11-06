@@ -1,11 +1,11 @@
 class BallSound {
   constructor()
   {
-    this.coin = new Audio('sounds/coin.mp3');
-    this.powerUpLaser = new Audio('sounds/laser.mp3');
-    this.powerUpSplit = new Audio('sounds/split.mp3');
-    this.addBall = new Audio('sounds/addBall.mp3');
-    this.collision = new Audio('sounds/collision.mp3');
+    this.coin = new Audio('static/sounds/coin.mp3');
+    this.powerUpLaser = new Audio('static/sounds/laser.mp3');
+    this.powerUpSplit = new Audio('static/sounds/split.mp3');
+    this.addBall = new Audio('static/sounds/addBall.mp3');
+    this.collision = new Audio('static/sounds/collision.mp3');
   }
 
   play(element){

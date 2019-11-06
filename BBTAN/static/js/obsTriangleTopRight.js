@@ -39,10 +39,10 @@ class ObsTriangleTopRight {
     ]);
     var response = new SAT.Response();
     let collision = SAT.testPolygonCircle(p,c,response)
-    if(collision){
-      console.log("Top Right");
-      console.log(response)
-    }
+    // if(collision){
+    //   console.log("Top Right");
+    //   console.log(response)
+    // }
     return collision
   }
 }

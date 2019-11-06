@@ -12,7 +12,7 @@ class BotScoreBoard {
     this.ctx.font = "bold 20px Arial";
     this.ctx.strokeStyle = "#d7e163";
     this.ctx.fillStyle = "#d7e163";
-    this.bGBotImage.src = "images/bottomScore.png";
+    this.bGBotImage.src = "static/images/bottomScore.png";
     this.ctx.drawImage(
       this.bGBotImage,
       0,
