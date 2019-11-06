@@ -203,22 +203,26 @@ class Game {
             obstacle.drawSquare(game.levelMap[i][j]);
             game.obstacles.push([obstacle, SQUARE]);
             break;
-          // case TRIANGLE_BOT_LEFT:
-          //   obstacle = new ObsTriangleBotLeft(game.ctx,i,j);
-          //   obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
-          //   break;
-          // case TRIANGLE_BOT_RIGHT:
-          //   obstacle = new ObsTriangleBotRight(game.ctx,i,j);
-          //   obstacle.drawTriangleBotRight(game.levelMap[i][j]);
-          //   break;
-          // case TRIANGLE_TOP_LEFT:
-          //   obstacle = new ObsTriangleTopRight(game.ctx,i,j);
-          //   obstacle.drawTriangleTopRight(game.levelMap[i][j]);
-          //   break;
-          // case TRIANGLE_TOP_RIGHT:
-          //   obstacle = new ObsTriangleTopLeft(game.ctx,i,j);
-          //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
-          //   break;
+          case TRIANGLE_BOT_LEFT:
+            obstacle = new ObsTriangleBotLeft(game.ctx, i + animateIndex, j,game);
+            obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
+            //game.obstacles.push([obstacle, SQUARE]);
+            break;
+          case TRIANGLE_BOT_RIGHT:
+            obstacle = new ObsTriangleBotRight(game.ctx, i + animateIndex, j,game);
+            obstacle.drawTriangleBotRight(game.levelMap[i][j]);
+            //game.obstacles.push([obstacle, SQUARE]);
+            break;
+          case TRIANGLE_TOP_LEFT:
+            obstacle = new ObsTriangleTopRight(game.ctx, i + animateIndex, j,game);
+            obstacle.drawTriangleTopRight(game.levelMap[i][j]);
+            //game.obstacles.push([obstacle, SQUARE]);
+            break;
+          case TRIANGLE_TOP_RIGHT:
+            obstacle = new ObsTriangleTopLeft(game.ctx, i + animateIndex, j,game);
+            obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
+            //game.obstacles.push([obstacle, SQUARE]);
+            break;
           case COIN:
             powerUp = new PowerUps(game.ctx,i + animateIndex, j, game.spriteSheet, 0); //type 0 for coin
             powerUp.drawCoin();
@@ -316,6 +320,10 @@ class Game {
     switch (type)
     {
       case SQUARE:
+      case TRIANGLE_BOT_LEFT:
+      case TRIANGLE_BOT_RIGHT:
+      case TRIANGLE_TOP_LEFT:
+      case TRIANGLE_TOP_RIGHT:
         this.levelMap[row][column]--;
         if (this.levelMap[row][column] <= 0) {
           this.tileMap[row][column] = 0;
@@ -724,22 +732,26 @@ function  draw() {
               obstacle.drawSquare(game.levelMap[i][j]);
               game.obstacles.push([obstacle, SQUARE]);
               break;
-            // case TRIANGLE_BOT_LEFT:
-            //   obstacle = new ObsTriangleBotLeft(game.ctx,i,j);
-            //   obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
-            //   break;
-            // case TRIANGLE_BOT_RIGHT:
-            //   obstacle = new ObsTriangleBotRight(game.ctx,i,j);
-            //   obstacle.drawTriangleBotRight(game.levelMap[i][j]);
-            //   break;
-            // case TRIANGLE_TOP_LEFT:
-            //   obstacle = new ObsTriangleTopRight(game.ctx,i,j);
-            //   obstacle.drawTriangleTopRight(game.levelMap[i][j]);
-            //   break;
-            // case TRIANGLE_TOP_RIGHT:
-            //   obstacle = new ObsTriangleTopLeft(game.ctx,i,j);
-            //   obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
-            //   break;
+            case TRIANGLE_BOT_LEFT:
+              obstacle = new ObsTriangleBotLeft(game.ctx, i, j, game);
+              obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
+              game.obstacles.push([obstacle, TRIANGLE_BOT_LEFT]);
+              break;
+            case TRIANGLE_BOT_RIGHT:
+              obstacle = new ObsTriangleBotRight(game.ctx, i, j, game);
+              obstacle.drawTriangleBotRight(game.levelMap[i][j]);
+              game.obstacles.push([obstacle, TRIANGLE_BOT_RIGHT]);
+              break;
+            case TRIANGLE_TOP_LEFT:
+              obstacle = new ObsTriangleTopRight(game.ctx, i, j, game);
+              obstacle.drawTriangleTopRight(game.levelMap[i][j]);
+              game.obstacles.push([obstacle, TRIANGLE_TOP_LEFT]);
+              break;
+            case TRIANGLE_TOP_RIGHT:
+              obstacle = new ObsTriangleTopLeft(game.ctx, i, j, game);
+              obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
+              game.obstacles.push([obstacle, TRIANGLE_TOP_RIGHT]);
+              break;
             case COIN:
               powerUp = new PowerUps(game.ctx, i, j, game.spriteSheet, 0); //type 0 for coin
               powerUp.drawCoin();

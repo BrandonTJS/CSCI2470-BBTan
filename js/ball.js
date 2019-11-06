@@ -136,6 +136,30 @@ class Ball {
         this.flagForPowVer = true;
         this.changeDirectionSquare(obstacle[0]);
         break;
+      case TRIANGLE_BOT_LEFT:
+        this.flagForSplit = true;
+        this.flagForPowHor = true;
+        this.flagForPowVer = true;
+        this.changeDirectionSquare(obstacle[0]);
+        break;
+      case TRIANGLE_BOT_RIGHT:
+        this.flagForSplit = true;
+        this.flagForPowHor = true;
+        this.flagForPowVer = true;
+        this.changeDirectionSquare(obstacle[0]);
+        break;
+      case TRIANGLE_TOP_LEFT:
+        this.flagForSplit = true;
+        this.flagForPowHor = true;
+        this.flagForPowVer = true;
+        this.changeDirectionSquare(obstacle[0]);
+        break;
+      case TRIANGLE_TOP_RIGHT:
+        this.flagForSplit = true;
+        this.flagForPowHor = true;
+        this.flagForPowVer = true;
+        this.changeDirectionSquare(obstacle[0]);
+        break;
       case POWER_SPLIT:
         if(this.flagForSplit){
           this.changeDirectionPowerSplit();
