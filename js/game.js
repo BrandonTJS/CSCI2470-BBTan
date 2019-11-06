@@ -206,22 +206,22 @@ class Game {
           case TRIANGLE_BOT_LEFT:
             obstacle = new ObsTriangleBotLeft(game.ctx, i + animateIndex, j,game);
             obstacle.drawTriangleBotLeft(game.levelMap[i][j]);
-            //game.obstacles.push([obstacle, SQUARE]);
+            game.obstacles.push([obstacle, TRIANGLE_BOT_LEFT]);
             break;
           case TRIANGLE_BOT_RIGHT:
             obstacle = new ObsTriangleBotRight(game.ctx, i + animateIndex, j,game);
             obstacle.drawTriangleBotRight(game.levelMap[i][j]);
-            //game.obstacles.push([obstacle, SQUARE]);
+            game.obstacles.push([obstacle, TRIANGLE_BOT_RIGHT]);
             break;
           case TRIANGLE_TOP_LEFT:
-            obstacle = new ObsTriangleTopRight(game.ctx, i + animateIndex, j,game);
-            obstacle.drawTriangleTopRight(game.levelMap[i][j]);
-            //game.obstacles.push([obstacle, SQUARE]);
-            break;
-          case TRIANGLE_TOP_RIGHT:
             obstacle = new ObsTriangleTopLeft(game.ctx, i + animateIndex, j,game);
             obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
-            //game.obstacles.push([obstacle, SQUARE]);
+            game.obstacles.push([obstacle, TRIANGLE_TOP_LEFT]);
+            break;
+          case TRIANGLE_TOP_RIGHT:
+            obstacle = new ObsTriangleTopRight(game.ctx, i + animateIndex, j,game);
+            obstacle.drawTriangleTopRight(game.levelMap[i][j]);
+            game.obstacles.push([obstacle, TRIANGLE_TOP_RIGHT]);
             break;
           case COIN:
             powerUp = new PowerUps(game.ctx,i + animateIndex, j, game.spriteSheet, 0); //type 0 for coin
@@ -284,7 +284,11 @@ class Game {
   checkTileMap(){
     let lastRow = this.tileMap.length - 1;
     for(let i=0; i<TILE_COLUMNS; i++){
-      if(this.tileMap[lastRow][i] === SQUARE || this.tileMap[lastRow][i] === DOUBLE_SQUARE){
+      if(this.tileMap[lastRow][i] === SQUARE || this.tileMap[lastRow][i] === DOUBLE_SQUARE 
+        || this.tileMap[lastRow][i] === TRIANGLE_BOT_LEFT
+        || this.tileMap[lastRow][i] === TRIANGLE_BOT_RIGHT
+        || this.tileMap[lastRow][i] === TRIANGLE_TOP_LEFT
+        || this.tileMap[lastRow][i] === TRIANGLE_TOP_RIGHT){
         this.gameStatus = 'gameOver';
         this.gameSound.play('gameOver');
         this.checkHighScore();
@@ -743,13 +747,13 @@ function  draw() {
               game.obstacles.push([obstacle, TRIANGLE_BOT_RIGHT]);
               break;
             case TRIANGLE_TOP_LEFT:
-              obstacle = new ObsTriangleTopRight(game.ctx, i, j, game);
-              obstacle.drawTriangleTopRight(game.levelMap[i][j]);
+              obstacle = new ObsTriangleTopLeft(game.ctx, i, j, game);
+              obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
               game.obstacles.push([obstacle, TRIANGLE_TOP_LEFT]);
               break;
             case TRIANGLE_TOP_RIGHT:
-              obstacle = new ObsTriangleTopLeft(game.ctx, i, j, game);
-              obstacle.drawTriangleTopLeft(game.levelMap[i][j]);
+              obstacle = new ObsTriangleTopRight(game.ctx, i, j, game);
+              obstacle.drawTriangleTopRight(game.levelMap[i][j]);
               game.obstacles.push([obstacle, TRIANGLE_TOP_RIGHT]);
               break;
             case COIN:

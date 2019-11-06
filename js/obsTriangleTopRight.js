@@ -3,6 +3,7 @@ class ObsTriangleTopRight {
     this.x = (TILE_WIDTH * column) + TILE_PADDING;
     this.y = (TILE_HEIGHT * row) + TILE_PADDING + TOP_HEIGHT;
     this.ctx = ctx;
+    this.ctx.font = 'bold 12px Arial';
     this.level = game.level;
     this.textX = 28;//aligning font at center
     this.textY = 15;//aligning font at center

@@ -3,6 +3,7 @@ class ObsTriangleTopLeft {
     this.x = (TILE_WIDTH * column) + TILE_PADDING;
     this.y = (TILE_HEIGHT * row) + TILE_PADDING + TOP_HEIGHT;
     this.ctx = ctx;
+    this.ctx.font = 'bold 12px Arial';
     this.level = game.level;
     this.textX = 4;//aligning font at center
     this.textY = 15;//aligning font at center
@@ -34,8 +35,8 @@ class ObsTriangleTopLeft {
     var c = new SAT.Circle(new SAT.Vector(ball.x,ball.y), BALL_RADIUS);
     var p = new SAT.Polygon(new SAT.Vector(this.x, this.y), [
       new SAT.Vector(this.offset1[0],this.offset1[1]),
-      new SAT.Vector(this.offset3[0],this.offset3[1]),
-      new SAT.Vector(this.offset2[0],this.offset2[1])
+      new SAT.Vector(this.offset2[0],this.offset2[1]),
+      new SAT.Vector(this.offset3[0],this.offset3[1])
     ]);
     var response = new SAT.Response();
     let collision = SAT.testPolygonCircle(p,c,response)

@@ -140,25 +140,25 @@ class Ball {
         this.flagForSplit = true;
         this.flagForPowHor = true;
         this.flagForPowVer = true;
-        this.changeDirectionSquare(obstacle[0]);
+        this.changeDirectionTriangle(obstacle);
         break;
       case TRIANGLE_BOT_RIGHT:
         this.flagForSplit = true;
         this.flagForPowHor = true;
         this.flagForPowVer = true;
-        this.changeDirectionSquare(obstacle[0]);
+        this.changeDirectionTriangle(obstacle);
         break;
       case TRIANGLE_TOP_LEFT:
         this.flagForSplit = true;
         this.flagForPowHor = true;
         this.flagForPowVer = true;
-        this.changeDirectionSquare(obstacle[0]);
+        this.changeDirectionTriangle(obstacle);
         break;
       case TRIANGLE_TOP_RIGHT:
         this.flagForSplit = true;
         this.flagForPowHor = true;
         this.flagForPowVer = true;
-        this.changeDirectionSquare(obstacle[0]);
+        this.changeDirectionTriangle(obstacle);
         break;
       case POWER_SPLIT:
         if(this.flagForSplit){
@@ -207,6 +207,49 @@ class Ball {
     } else if (this.y + BALL_RADIUS/2 > (obstacle.y + OBSTACLE_HEIGHT)) {
       this.dy = -Math.abs(this.dy);
     }
+
+    this.ballSound.play('collision');
+  }
+
+  changeDirectionTriangle(obstacle){
+
+    let distX = Math.abs(this.x - obstacle[0].x - LINE_WIDTH - OBSTACLE_WIDTH / 2);
+    let distY = Math.abs(this.y - obstacle[0].y - LINE_WIDTH - OBSTACLE_HEIGHT / 2);
+    if (distX <= BALL_RADIUS+LINE_WIDTH || distY <= BALL_RADIUS+LINE_WIDTH) {
+      switch (obstacle[1]){
+        case TRIANGLE_BOT_LEFT:
+          this.dy = -BALL_VELOCITY/2;
+          this.dx = BALL_VELOCITY/2;
+          break;
+        case TRIANGLE_BOT_RIGHT:
+          this.dy = -BALL_VELOCITY/2;
+          this.dx = -BALL_VELOCITY/2;
+          break;
+        case TRIANGLE_TOP_LEFT:
+          this.dy = BALL_VELOCITY/2;
+          this.dx = BALL_VELOCITY/2;
+          break;
+        case TRIANGLE_TOP_RIGHT:
+          this.dy = BALL_VELOCITY/2;
+          this.dx = -BALL_VELOCITY/2;
+          break;
+        default:
+        //do  nothing
+      }
+    } else {
+      if (this.x - BALL_RADIUS/2 < obstacle[0].x) {
+        this.dx = -Math.abs(this.dx);
+      } else if (this.x + BALL_RADIUS/2 > (obstacle[0].x + OBSTACLE_WIDTH)) {
+        this.dx = Math.abs(this.dx);
+      }
+  
+      if (this.y - BALL_RADIUS/2 < obstacle[0].y) {
+        this.dy = Math.abs(this.dy);
+      } else if (this.y + BALL_RADIUS/2 > (obstacle[0].y + OBSTACLE_HEIGHT)) {
+        this.dy = -Math.abs(this.dy);
+      }
+    }
+    
     this.ballSound.play('collision');
   }
 

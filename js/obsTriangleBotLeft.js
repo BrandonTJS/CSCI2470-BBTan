@@ -3,6 +3,7 @@ class ObsTriangleBotLeft {
     this.x = (TILE_WIDTH * column) + TILE_PADDING;
     this.y = (TILE_HEIGHT * row) + TILE_PADDING + TOP_HEIGHT;
     this.ctx = ctx;
+    this.ctx.font = 'bold 12px Arial';
     this.level = game.level;
     this.offset1 = [0,0];
     this.offset2 = [0,OBSTACLE_HEIGHT];
