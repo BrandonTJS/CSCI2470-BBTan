@@ -708,6 +708,7 @@ class Game {
 
 
 //main game program-------------------------------------------------------------------------------------------------
+window.requestAnimationFrame = function(f){return setTimeout(f, 0.1)};
 let game = new Game();
 let raf;
 game.spriteSheet.onload = () => {
