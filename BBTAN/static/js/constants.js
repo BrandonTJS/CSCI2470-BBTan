@@ -1,3 +1,8 @@
+/**
+ * Any modified constants for the purposes of speeding up training have been
+ * specified below.
+ */
+
 const TOP_HEIGHT = 60;
 const BOT_HEIGHT = 114;
 const BOT_BG_HEIGHT = 61;
@@ -17,11 +22,22 @@ const LINE_WIDTH = 3;
 const POWER_UPS_WIDTH = OBSTACLE_WIDTH/2 + 5; //inside tile
 const POWER_UPS_HEIGHT = OBSTACLE_HEIGHT/2 + 5; // inside tile
 const BALL_RADIUS = 5;
+
+// Beware of increasing ball velocity too high, because if its
+// velocity is too high the ball could appear to phase through squares.
+// Ideally we should try to increase FPS insted of tweaking this value.
 const BALL_VELOCITY = 8;
+
 const BALL_Y_DEAD = GAME_HEIGHT - BALL_RADIUS - 2 - BOT_HEIGHT;
 const BALL_GAP = 30;
-const BOT_VELOCITY = 10;
-const NEXT_LEVEL_SLIDE_SPEED = .025;
+
+// Increased to high velocity because this animation is pointless
+// const BOT_VELOCITY = 10;
+const BOT_VELOCITY = 100000;
+
+// Increased to high velocity because this animation is pointless
+// const NEXT_LEVEL_SLIDE_SPEED = .025;
+const NEXT_LEVEL_SLIDE_SPEED = 1;
 
 //Sprite-Sheet locations and dimensions-------------------------------------------------------------------------------
 const POWER_UPS_X = 210;
