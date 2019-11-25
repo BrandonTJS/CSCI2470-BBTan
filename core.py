@@ -63,11 +63,12 @@ class Core:
         action_probability = self.model.call(tf.convert_to_tensor([game_state]))
         action_probability = action_probability.numpy()[0]
         action = np.random.choice(self.action_space, p=action_probability)
-        print(sum(action_probability))
+
         self.states.append(game_state)
         self.actions.append(action)
-        self.rewards.append(1)
-
+        incentive = game_state[66:].count(0)
+        self.rewards.append(1 + incentive)
+        
         return action
 
 

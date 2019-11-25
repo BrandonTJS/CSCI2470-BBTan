@@ -46,10 +46,10 @@ def new_transaction():
 		game_state_flat.append(content['balls'])
 		game_state_flat.append(content['bot_x'])
 		game_state_flat.append(content['bot_y'])
-		for i in range(len(content['tileMap'])):
-			game_state_flat.extend(content['tileMap'][i])
-			game_state_flat.extend(content['levelMap'][i])
-		#print(game_state_flat)
+		for i in range(len(tileMap)):
+			game_state_flat.extend(tileMap[i])
+		for i in range(len(cleanLevelMap)):
+			game_state_flat.extend(cleanLevelMap[i])
 
 		action = core.calculate_action(game_state_flat)
 		response = {'mouse_x': action.item(), "mouse_y": 300}

@@ -97,7 +97,7 @@ class Game {
       } else {
         if(this.checkLevel()) {
           randomValue = getRandomNumber(8, 0);
-          if (randomValue >= 0 && randomValue <= 5) {
+          if (randomValue >= 0 && randomValue <= 4) {
             newTile.push(SQUARE);
             newLevel.push(this.level);
           } else if (randomValue === 6) {
