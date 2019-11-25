@@ -99,20 +99,25 @@ class Ball {
 
   //animate the dead ball to first ball----------------------------------------------------------------------------
   moveToFirstBall(game) {
-    if ( (this.x >= game.firstDeadBallX-BALL_RADIUS) && (this.x <= game.firstDeadBallX+BALL_RADIUS) ) {
-        this.y = BALL_Y_DEAD;
-        this.x = game.firstDeadBallX;
-        this.dx = 0;
-        game.ballsLeft--;
-        this.visible = false;
-    }else {
-      this.y = BALL_Y_DEAD + 3;
-      if (this.x < game.firstDeadBallX) {
-        this.dx = BALL_VELOCITY;
-      } else {
-        this.dx = -1 * BALL_VELOCITY;
-      }
-    }
+    // if ( (this.x >= game.firstDeadBallX-BALL_RADIUS) && (this.x <= game.firstDeadBallX+BALL_RADIUS) ) {
+    //     this.y = BALL_Y_DEAD;
+    //     this.x = game.firstDeadBallX;
+    //     this.dx = 0;
+    //     game.ballsLeft--;
+    //     this.visible = false;
+    // }else {
+    //   this.y = BALL_Y_DEAD + 3;
+    //   if (this.x < game.firstDeadBallX) {
+    //     this.dx = BALL_VELOCITY;
+    //   } else {
+    //     this.dx = -1 * BALL_VELOCITY;
+    //   }
+    // }
+      this.y = BALL_Y_DEAD;
+      this.x = game.firstDeadBallX;
+      this.dx = 0;
+      game.ballsLeft--;
+      this.visible = false;
   }
 
   //if no balls left to shoot go to next level---------------------------------------------------------------------
