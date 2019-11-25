@@ -26,13 +26,15 @@ class ReinforceWithBaseline(tf.keras.Model):
         self.num_actions = num_actions
 
         # TODO: Define actor network parameters, critic network parameters, and optimizer
-        self.dense1 = tf.keras.layers.Dense(300, input_dim=state_size, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
-        self.dense5 = tf.keras.layers.Dense(300, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
-        self.dense2 = tf.keras.layers.Dense(num_actions, activation='softmax', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
+        self.dense1 = tf.keras.layers.Dense(48, input_dim=state_size, activation='relu', use_bias=True, kernel_initializer='zeros')
+        self.dense5 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer='zeros')
+        self.dense6 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer='zeros')
+        self.dense7 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer='zeros')
+        self.dense2 = tf.keras.layers.Dense(num_actions, activation='softmax', use_bias=True, kernel_initializer='zeros')
 
         #critic network
-        self.dense3 = tf.keras.layers.Dense(300, input_dim=state_size, activation='relu', use_bias=True)
-        self.dense4 = tf.keras.layers.Dense(1, use_bias=True)
+        self.dense3 = tf.keras.layers.Dense(48, input_dim=state_size, activation='relu', use_bias=True, kernel_initializer='zeros')
+        self.dense4 = tf.keras.layers.Dense(1, use_bias=True, kernel_initializer='zeros')
 
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
@@ -51,6 +53,8 @@ class ReinforceWithBaseline(tf.keras.Model):
         # TODO: implement this!
         output = self.dense1(states)
         output = self.dense5(output)
+        output = self.dense6(output)
+        output = self.dense7(output)
         output = self.dense2(output)
 
         return output

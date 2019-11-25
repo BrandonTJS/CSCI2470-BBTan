@@ -55,7 +55,7 @@ def new_transaction():
 		action = core.calculate_action(game_state_flat)
 		response = {'mouse_x': action.item(), "mouse_y": 300}
 		response_code = 200
-		print("Predicted Action: (" + str(action) + "," + str(300) + ")\n\n")
+		print("Predicted Action: (" + str(action) + "," + str(300) + ")\n")
 	else:
 		response = {'error': 'Invalid Game State'}
 		response_code = 500
