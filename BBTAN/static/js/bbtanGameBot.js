@@ -28,12 +28,15 @@ class BbtanGameBot {
   }
 
   updateBot() {
-    this.x += this.dx;
-    if ( (this.x >= (this.newX-BOT_VELOCITY)) && (this.x <= (this.newX+BOT_VELOCITY)) ) {
-      this.x = this.newX;
-      this.dx = 0;
-      this.newX = this.x;
-    }
+    // this.x += this.dx;
+    // if ( (this.x >= (this.newX-BOT_VELOCITY)) && (this.x <= (this.newX+BOT_VELOCITY)) ) {
+    //   this.x = this.newX;
+    //   this.dx = 0;
+    //   this.newX = this.x;
+    // }
+    this.x = this.newX;
+    this.dx = 0;
+    this.newX = this.x;
   }
 
   checkDirectionToMove(newX){

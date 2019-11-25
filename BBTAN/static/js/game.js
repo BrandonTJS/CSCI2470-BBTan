@@ -86,7 +86,7 @@ class Game {
 
   //tile-row generator logic------------------------------------------------------------------------------------------
   generateNewTile() {
-    let addBallPosition = getRandomNumber(TILE_COLUMNS-1,0); //position for the +1 ball powerUP
+    let addBallPosition = getSeededRandomNumber(TILE_COLUMNS-1,0,this.seedRand); //position for the +1 ball powerUP
     let newTile = [];
     let newLevel = [];
     let randomValue;
@@ -96,20 +96,20 @@ class Game {
         newLevel.push(this.level);
       } else {
         if(this.checkLevel()) {
-          randomValue = getRandomNumber(8, 0);
+          randomValue = getSeededRandomNumber(8, 0, this.seedRand);
           if (randomValue >= 0 && randomValue <= 3) {
             newTile.push(SQUARE);
             newLevel.push(this.level);
           } else if (randomValue === 6) {
-            this.randomTriangle(newTile, newLevel);
+            this.randomTriangle(newTile, newLevel, this.seedRand);
           } else if (randomValue === 7) {
-            this.randomPowerUp(newTile, newLevel);
+            this.randomPowerUp(newTile, newLevel, this.seedRand);
           } else {
             newTile.push(BLANK);
             newLevel.push(this.level);
           }
         }else{
-          randomValue = getRandomNumber(8, 0);
+          randomValue = getSeededRandomNumber(8, 0, this.seedRand);
           if (randomValue >= 0 && randomValue <= 3) {
             newTile.push(DOUBLE_SQUARE);
             newLevel.push(this.level*2);
@@ -124,8 +124,8 @@ class Game {
   }
 
   //random triangle selector-------------------------------------------------------------------------------------------
-  randomTriangle(newTile,newLevel) {
-    let randomValue1 = getRandomNumber(3,0);
+  randomTriangle(newTile,newLevel, seedRand) {
+    let randomValue1 = getSeededRandomNumber(3,0, seedRand);
     switch (randomValue1) {
       case 0:
         newTile.push(TRIANGLE_BOT_LEFT);
@@ -146,8 +146,8 @@ class Game {
   }
 
   //randomPowerUP selector--------------------------------------------------------------------------------------------
-  randomPowerUp(newTile,newLevel) {
-    let randomValue2 = getRandomNumber(3,0);
+  randomPowerUp(newTile,newLevel, seedRand) {
+    let randomValue2 = getSeededRandomNumber(3,0, seedRand);
     switch (randomValue2) {
       case 0:
         newTile.push(COIN);
@@ -659,6 +659,8 @@ class Game {
 
   //reset game
   reset(){
+    console.log('---------------new game---------------')
+    this.seedRand = new Math.seedrandom('BBTAN');
     this.gameTime = TOTAL_TIME;
     this.level = 1;
     this.colorChange = 0;
@@ -708,6 +710,7 @@ class Game {
 
 
 //main game program-------------------------------------------------------------------------------------------------
+
 window.requestAnimationFrame = function(f){return setTimeout(f, 0.1)};
 let game = new Game();
 let raf;

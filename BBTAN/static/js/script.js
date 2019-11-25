@@ -5,6 +5,10 @@ function getRandomNumber(max, min) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function getSeededRandomNumber(max, min, seedRand) {
+  return Math.floor(seedRand() * (max - min + 1)) + min;
+}
+
 //Random number generator float-------------------------------------------------------------------------------------
 function getRandomFloat(max, min) {
   return (Math.random() * (max - min + 1)) + min;
