@@ -39,6 +39,7 @@ def new_transaction():
 		game_counter += 1
 		if game_counter % 5 == 0:
 			core.print_total_rewards(num_previous_round=5)
+		print("Games Played: " + str(game_counter))
 		response = {'status': 'ok'}
 		response_code = 200
 	elif content['gameStatus'] == 'inGame':

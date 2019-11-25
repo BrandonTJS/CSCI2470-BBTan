@@ -67,8 +67,8 @@ class Core:
         self.states.append(game_state)
         self.actions.append(action)
         incentive = game_state[66:].count(0)
-        self.rewards.append(1 + incentive)
-        
+        self.rewards.append(63 + incentive)
+
         return action
 
 
