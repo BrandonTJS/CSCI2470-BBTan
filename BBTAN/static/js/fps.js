@@ -19,7 +19,7 @@ class FPSCounter {
     this.lastTimestamp = null;
   }
 
-  draw(x, y) {
+  draw() {
     this.ctx.beginPath();
     this.ctx.font = '10px Arial';
     this.ctx.fillStyle = '#000000';
@@ -44,8 +44,7 @@ class FPSCounter {
 
     // Check if we need to remove old element from circular buffer.
     if (this.bufSize === this.bufMaxSize) {
-      const prevIdx = (this.bufNext - 1 + this.bufMaxSize) % this.bufMaxSize;
-      this.bufSum -= this.counts[prevIdx];
+      this.bufSum -= this.counts[this.bufNext];
     }
 
     // Add to circular buffer and advance pointer.
