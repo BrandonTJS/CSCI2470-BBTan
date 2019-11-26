@@ -19,6 +19,8 @@ class ObsTriangleTopRight {
   }
 
   drawTriangleTopRight(level) {
+    if (!RENDER_TOGGLES.DRAW_SQUARE) return;
+
     this.level = level;
     this.ctx.beginPath();
     this.ctx.moveTo(this.x+this.offset1[0],this.y+this.offset1[1]);

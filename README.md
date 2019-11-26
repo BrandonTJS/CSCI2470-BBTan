@@ -51,3 +51,11 @@ python bridge.py
 
 Open the game in the browser at <http://127.0.0.1:8000>, which will begin model training.
 
+## Game Engine Optimizations
+
+### Disable Renders, Animations, Sounds
+
+The game code has been instrumented to check various boolean flags before rendering updates to the HTML5 Canvas, or
+before playing a sound. This can help aid training.
+
+The flags can be individually controlled in `constants.js`.

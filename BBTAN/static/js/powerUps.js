@@ -12,22 +12,27 @@ class PowerUps {
   }
 
   drawCoin() {
+    if (!RENDER_TOGGLES.DRAW_POWERUP) return;
     this.ctx.drawImage(this.spriteSheet,this.sx,this.sy,POWER_UPS_SIZE,POWER_UPS_SIZE,this.x,this.y,POWER_UPS_WIDTH,POWER_UPS_HEIGHT);
   }
 
   drawPlus() {
+    if (!RENDER_TOGGLES.DRAW_POWERUP) return;
     this.ctx.drawImage(this.spriteSheet,this.sx,this.sy,POWER_UPS_SIZE,POWER_UPS_SIZE,this.x,this.y,POWER_UPS_WIDTH,POWER_UPS_HEIGHT);
   }
 
   drawPowerHorizontal() {
+    if (!RENDER_TOGGLES.DRAW_POWERUP) return;
     this.ctx.drawImage(this.spriteSheet,this.sx,this.sy,POWER_UPS_SIZE,POWER_UPS_SIZE,this.x,this.y,POWER_UPS_WIDTH,POWER_UPS_HEIGHT);
   }
 
   drawPowerVertical() {
+    if (!RENDER_TOGGLES.DRAW_POWERUP) return;
     this.ctx.drawImage(this.spriteSheet,this.sx,this.sy,POWER_UPS_SIZE,POWER_UPS_SIZE,this.x,this.y,POWER_UPS_WIDTH,POWER_UPS_HEIGHT);
   }
 
   drawPowerSplit() {
+    if (!RENDER_TOGGLES.DRAW_POWERUP) return;
     this.ctx.drawImage(this.spriteSheet,this.sx,this.sy,POWER_UPS_SIZE,POWER_UPS_SIZE,this.x,this.y,POWER_UPS_WIDTH,POWER_UPS_HEIGHT);
   }
 

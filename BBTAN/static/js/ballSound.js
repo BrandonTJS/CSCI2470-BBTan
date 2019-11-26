@@ -9,6 +9,8 @@ class BallSound {
   }
 
   play(element){
+    if (!PLAY_SOUND) return;
+
     if (element == 'coin') {
       this.coin.currentTime = 0;
       this.coin.play();

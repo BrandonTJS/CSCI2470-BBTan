@@ -28,6 +28,23 @@ const BALL_RADIUS = 5;
 // Ideally we should try to increase FPS insted of tweaking this value.
 const BALL_VELOCITY = 8;
 
+// Render toggles.
+const RENDER_DRAW = true;
+const RENDER_ANIMATE = false;
+const RENDER_TOGGLES = {
+  DRAW_BALL: RENDER_DRAW,
+  DRAW_BOT: RENDER_DRAW,
+  DRAW_TIME: RENDER_DRAW,
+  DRAW_SQUARE: RENDER_DRAW,
+  DRAW_POWERUP: RENDER_DRAW,
+  ANIMATE_SQUARE: RENDER_ANIMATE,
+  ANIMATE_PLUS1: RENDER_ANIMATE,
+  ANIMATE_LASER: RENDER_ANIMATE,
+};
+
+// Sound toggle.
+const PLAY_SOUND = false;
+
 const BALL_Y_DEAD = GAME_HEIGHT - BALL_RADIUS - 2 - BOT_HEIGHT;
 const BALL_GAP = 30;
 

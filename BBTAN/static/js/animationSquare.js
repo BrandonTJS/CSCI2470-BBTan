@@ -14,6 +14,8 @@ class AnimationSquare {
   }
 
   drawSquare(opacityIndex) {
+    if (!RENDER_TOGGLES.ANIMATE_SQUARE) return;
+
     this.ctx.beginPath();
     this.ctx.fillStyle = this.sqColor;
     this.ctx.globalAlpha = opacityIndex;

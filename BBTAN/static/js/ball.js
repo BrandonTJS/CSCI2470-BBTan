@@ -16,6 +16,8 @@ class Ball {
   }
 
   drawBall() {
+    if (!RENDER_TOGGLES.DRAW_BALL) return;
+
     this.ctx.beginPath();
     this.ctx.strokeStyle = 'white';
     this.ctx.fillStyle = 'white';
@@ -249,14 +251,14 @@ class Ball {
       } else if (this.x + BALL_RADIUS/2 > (obstacle[0].x + OBSTACLE_WIDTH)) {
         this.dx = Math.abs(this.dx);
       }
-  
+
       if (this.y - BALL_RADIUS/2 < obstacle[0].y) {
         this.dy = Math.abs(this.dy);
       } else if (this.y + BALL_RADIUS/2 > (obstacle[0].y + OBSTACLE_HEIGHT)) {
         this.dy = -Math.abs(this.dy);
       }
     }
-    
+
     this.ballSound.play('collision');
   }
 
@@ -284,7 +286,9 @@ class Ball {
         let tempValue = game.tileMap[row][i];
         if (tempValue<=5 && tempValue>=1) {
           game.tileMap[row][i] = 0;
-          game.animation.push(new Animation(game,row,i));
+          if (RENDER_TOGGLES.ANIMATE_LASER) {
+            game.animation.push(new Animation(game,row,i));
+          }
         }
       }
     }
@@ -300,7 +304,9 @@ class Ball {
         let tempValue = game.tileMap[i][column];
         if (tempValue<=5 && tempValue>=1) {
           game.tileMap[i][column] = 0;
-          game.animation.push(new Animation(game,i,column));
+          if (RENDER_TOGGLES.ANIMATE_LASER) {
+            game.animation.push(new Animation(game,i,column));
+          }
         }
       }
     }

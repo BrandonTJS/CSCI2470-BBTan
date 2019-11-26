@@ -10,6 +10,8 @@ class BbtanGameBot {
   }
 
   drawBbtanBot(gameStatus, game) {
+    if (!RENDER_TOGGLES.DRAW_BOT) return;
+
     if (gameStatus == 'inGame' || gameStatus == 'gameOver' || gameStatus == 'nextLevel') {
       this.updateBot();
       this.ctx.beginPath();

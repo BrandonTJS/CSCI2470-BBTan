@@ -7,7 +7,7 @@ class ObsTriangleBotRight {
     this.level = game.level;
     this.textX = 28;//aligning font at center
     this.textY = 36;//aligning font at center
-    
+
     this.offset1 = [OBSTACLE_WIDTH,0];
     this.offset2 = [0,OBSTACLE_HEIGHT];
     this.offset3 = [OBSTACLE_WIDTH,OBSTACLE_HEIGHT];
@@ -20,6 +20,8 @@ class ObsTriangleBotRight {
   }
 
   drawTriangleBotRight(level) {
+    if (!RENDER_TOGGLES.DRAW_SQUARE) return;
+
     this.level = level;
     this.ctx.beginPath();
     this.ctx.moveTo(this.x+this.offset1[0],this.y+this.offset1[1]);

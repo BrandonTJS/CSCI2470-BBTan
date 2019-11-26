@@ -446,6 +446,8 @@ class Game {
 
   //display time at bottom--------------------------------------------------------------------------------------------
   drawTime() {
+    if (!RENDER_TOGGLES.DRAW_TIME) return;
+
     if(this.gameStatus === 'inGame' || this.gameStatus === 'gameOver' || this.gameStatus === 'nextLevel') {
       let color = getRandomNumber(TIMER_COLOR.length-1,0);
       this.ctx.beginPath();

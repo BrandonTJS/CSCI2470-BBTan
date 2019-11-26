@@ -15,6 +15,8 @@ class ObsSquare {
   }
 
   drawSquare(level) {
+    if (!RENDER_TOGGLES.DRAW_SQUARE) return;
+
     this.level = level;
     if(this.level>99){
       this.textX -= 6;
@@ -33,6 +35,8 @@ class ObsSquare {
   }
 
   drawCollidedSquare() {
+    if (!RENDER_TOGGLES.ANIMATE_SQUARE) return;
+
     if(this.level>99){
       this.textX -= 6;
     } else if (this.level>9){

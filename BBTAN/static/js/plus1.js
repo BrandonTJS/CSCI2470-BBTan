@@ -12,6 +12,8 @@ class Plus1 {
   }
 
   drawPlus1() {
+    if (!RENDER_TOGGLES.ANIMATE_PLUS1) return;
+
     this.ctx.beginPath();
     this.ctx.font = 'bold 20px Arial'
     this.ctx.strokeStyle = '#d7e163';
@@ -22,6 +24,11 @@ class Plus1 {
   }
 
   updatePlus1() {
+    if (!RENDER_TOGGLES.ANIMATE_PLUS1) {
+      this.counter = 30;
+      return;
+    }
+
     this.counter++;
     this.opacityIndex -= .016;
     this.textY -= .5;

@@ -8,6 +8,8 @@ class GameSound {
   }
 
   play(element){
+    if (!PLAY_SOUND) return;
+
     if (element == 'gameOver') {
       this.gameOver.pause();
       this.gameOver.currentTime = 0;
