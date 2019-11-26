@@ -715,13 +715,20 @@ class Game {
 
 //main game program-------------------------------------------------------------------------------------------------
 
-window.requestAnimationFrame = function(f){return setTimeout(f, 0.1)};
 let game = new Game();
 let raf;
 game.spriteSheet.onload = () => {
-  draw();
+  drawBatch();
 };
 
+function drawBatch() {
+  for (let i = 0; i < DRAW_BATCH_SIZE; i++) {
+    draw();
+  }
+
+  // Minimum delay is 4ms.
+  return setTimeout(drawBatch, 4);
+}
 
 //main draw for game---------------------------------------------------------------------------------------------------
 function  draw() {
@@ -835,8 +842,6 @@ function  draw() {
   // Update FPS counter
   game.fps.frameDone();
   game.fps.draw();
-
-  raf = window.requestAnimationFrame(draw);
 }
 
 //for shooting the ball click event listener-------------------------------------------------------------------------

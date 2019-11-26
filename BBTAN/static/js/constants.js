@@ -29,7 +29,7 @@ const BALL_RADIUS = 5;
 const BALL_VELOCITY = 8;
 
 // Render toggles.
-const RENDER_DRAW = true;
+const RENDER_DRAW = false;
 const RENDER_ANIMATE = false;
 const RENDER_TOGGLES = {
   DRAW_BALL: RENDER_DRAW,
@@ -44,6 +44,9 @@ const RENDER_TOGGLES = {
 
 // Sound toggle.
 const PLAY_SOUND = false;
+
+// Number of times to call draw() synchronously before updating the UI thread.
+const DRAW_BATCH_SIZE = 24;
 
 const BALL_Y_DEAD = GAME_HEIGHT - BALL_RADIUS - 2 - BOT_HEIGHT;
 const BALL_GAP = 30;
