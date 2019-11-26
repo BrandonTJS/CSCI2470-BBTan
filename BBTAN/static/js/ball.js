@@ -116,6 +116,7 @@ class Ball {
       this.y = BALL_Y_DEAD;
       this.x = game.firstDeadBallX;
       this.dx = 0;
+      this.dy = 0;
       game.ballsLeft--;
       this.visible = false;
   }
