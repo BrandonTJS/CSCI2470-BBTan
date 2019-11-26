@@ -29,7 +29,7 @@ const BALL_RADIUS = 5;
 const BALL_VELOCITY = 8;
 
 // Render toggles.
-const RENDER_DRAW = false;
+const RENDER_DRAW = true;
 const RENDER_ANIMATE = false;
 const RENDER_TOGGLES = {
   DRAW_BALL: RENDER_DRAW,
