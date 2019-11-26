@@ -63,6 +63,8 @@ class Game {
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0]
     ];
+
+    this.fps = new FPSCounter(this.ctx, 60);
   }
 
   setHighScore() {
@@ -827,6 +829,11 @@ function  draw() {
     game.drawStartMenu();
     game.gameSound.play('startGame');
   }
+
+  // Update FPS counter
+  game.fps.frameDone();
+  game.fps.draw();
+
   raf = window.requestAnimationFrame(draw);
 }
 
