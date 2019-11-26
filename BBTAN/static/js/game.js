@@ -10,6 +10,7 @@ class Game {
     this.bgBot = new BbtanBgBot(this.ctx);
     this.botScoreBoard = new BotScoreBoard(this.ctx);
     this.level = 1;
+    this.maxLevel = 1;
     this.colorChange = 0;
     //Setting the time for game----------------------------------------------------------------------------------------
     this.gameTime = TOTAL_TIME;

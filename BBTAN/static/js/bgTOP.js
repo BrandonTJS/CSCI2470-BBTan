@@ -56,9 +56,9 @@ class BbtanBgTop {
       let topX = GAME_WIDTH - 45;
       let topY = 20;
       let scoreX = GAME_WIDTH - 25;
-      if (game.level > 9) {
+      if (game.maxLevel > 9) {
         scoreX = GAME_WIDTH - 30;
-      } else if (game.level > 99) {
+      } else if (game.maxLevel > 99) {
         scoreX = GAME_WIDTH - 35;
       }
       let scoreY = TOP_HEIGHT - 10;
@@ -67,7 +67,7 @@ class BbtanBgTop {
       this.ctx.fillStyle = "white";
       this.ctx.fillText("TOP", topX, topY);
       this.ctx.font = "normal 25px SquareFont";
-      this.ctx.fillText(game.level, scoreX, scoreY);
+      this.ctx.fillText(game.maxLevel, scoreX, scoreY);
       this.ctx.closePath();
     }
   }

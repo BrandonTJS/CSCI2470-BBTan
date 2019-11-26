@@ -128,6 +128,7 @@ class Ball {
     if(game.ballsLeft==0) {
       game.firstDeadBallX = null;
       game.level++;
+      game.maxLevel = Math.max(game.maxLevel, game.level);
       game.setColorChangeIndex();
       game.removePowerUps();
       game.updateTileMap();
