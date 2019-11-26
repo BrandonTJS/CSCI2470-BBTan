@@ -1,6 +1,7 @@
-# _???_: Mastering BBTAN with Deep Reinforcement Learning
+# CSCI 2470 Deep Learning Project
 
-This is a project submission for CSCI 2470 Deep Learning.
+- Title: _Mastering BBTAN with Deep Reinforcement Learning_
+- Team Members: `tjiansin`, `ilim5`, `xli148`, `cwang147`
 
 ## Components
 
@@ -36,23 +37,17 @@ This is a project submission for CSCI 2470 Deep Learning.
 
 ## Instructions
 
-### Setup
+Create a new virtualenv, and install requirements:
 
-1. Create new virtualenv.
-2. Install requirements:
+```sh
+pip install -r requirements.txt
+```
 
-   ```sh
-   pip install -r requirements.txt
-   ```
+Start the Flask server:
 
-3. Start Web Bridge
+```sh
+python bridge.py
+```
 
-   ```sh
-   python bridge.py
-   ```
+Open the game in the browser at <http://127.0.0.1:8000>, which will begin model training.
 
-4. Navigate to 
-
-   ```sh
-   http://127.0.0.1:8000
-   ```

@@ -63,6 +63,8 @@ class Game {
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0]
     ];
+
+    this.fps = new FPSCounter(this.ctx, 60);
   }
 
   setHighScore() {
@@ -285,7 +287,7 @@ class Game {
   checkTileMap(){
     let lastRow = this.tileMap.length - 1;
     for(let i=0; i<TILE_COLUMNS; i++){
-      if(this.tileMap[lastRow][i] === SQUARE || this.tileMap[lastRow][i] === DOUBLE_SQUARE 
+      if(this.tileMap[lastRow][i] === SQUARE || this.tileMap[lastRow][i] === DOUBLE_SQUARE
         || this.tileMap[lastRow][i] === TRIANGLE_BOT_LEFT
         || this.tileMap[lastRow][i] === TRIANGLE_BOT_RIGHT
         || this.tileMap[lastRow][i] === TRIANGLE_TOP_LEFT
@@ -827,6 +829,11 @@ function  draw() {
     game.drawStartMenu();
     game.gameSound.play('startGame');
   }
+
+  // Update FPS counter
+  game.fps.frameDone();
+  game.fps.draw();
+
   raf = window.requestAnimationFrame(draw);
 }
 
@@ -907,11 +914,5 @@ function checkClickOperation(game, evt) {
     }
   }
 }
-
-
-
-
-
-
 
 
