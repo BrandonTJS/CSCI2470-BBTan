@@ -25,18 +25,20 @@ class ReinforceWithBaseline(tf.keras.Model):
         super(ReinforceWithBaseline, self).__init__()
         self.num_actions = num_actions
 
-        # TODO: Define actor network parameters, critic network parameters, and optimizer
-        self.dense1 = tf.keras.layers.Dense(48, input_dim=state_size, activation='relu', use_bias=True, kernel_initializer='zeros')
-        self.dense5 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer='zeros')
-        self.dense6 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer='zeros')
-        self.dense7 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer='zeros')
-        self.dense2 = tf.keras.layers.Dense(num_actions, activation='softmax', use_bias=True, kernel_initializer='zeros')
+        #actor network
+        self.dense1 = tf.keras.layers.Dense(48, input_dim=state_size, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
+        self.dense5 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
+        self.dense6 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
+        self.dense7 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
+        self.dense2 = tf.keras.layers.Dense(num_actions, activation='softmax', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
 
         #critic network
-        self.dense3 = tf.keras.layers.Dense(48, input_dim=state_size, activation='relu', use_bias=True, kernel_initializer='zeros')
-        self.dense4 = tf.keras.layers.Dense(1, use_bias=True, kernel_initializer='zeros')
+        self.dense3 = tf.keras.layers.Dense(48, input_dim=state_size, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
+        self.dense8 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
+        self.dense4 = tf.keras.layers.Dense(1, use_bias=True, kernel_initializer=tf.random_uniform_initializer())
 
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.002)
+        print('INIT')
 
     @tf.function
     def call(self, states):
@@ -50,7 +52,6 @@ class ReinforceWithBaseline(tf.keras.Model):
         :return: A [episode_length,num_actions] matrix representing the probability distribution over actions
         of each state in the episode
         """
-        # TODO: implement this!
         output = self.dense1(states)
         output = self.dense5(output)
         output = self.dense6(output)
@@ -68,8 +69,8 @@ class ReinforceWithBaseline(tf.keras.Model):
         of an episode
         :return: A [episode_length] matrix representing the value of each state
         """
-        # TODO: implement this :D
         output = self.dense3(states)
+        output = self.dense8(output)
         output = self.dense4(output)
 
         return output
@@ -91,8 +92,6 @@ class ReinforceWithBaseline(tf.keras.Model):
         :param discounted_rewards: Discounted rewards throughout a complete episode (represented as an [episode_length] array)
         :return: loss, a TensorFlow scalar
         """
-        # TODO: implement this :)
-        # Hint: use tf.gather_nd (https://www.tensorflow.org/api_docs/python/tf/gather_nd) to get the probabilities of the actions taken by the model
         probabilities = self.call(states)
         actions_reshape = tf.stack([range(len(actions)), actions], axis=1)
         action_probabilities = tf.gather_nd(probabilities, actions_reshape)

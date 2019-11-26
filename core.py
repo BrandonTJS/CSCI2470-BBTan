@@ -58,10 +58,10 @@ class Core:
         in the episode
         """
 
-        #TODO: if game_state.status == gameover, train()
-
+        
         action_probability = self.model.call(tf.convert_to_tensor([game_state]))
         action_probability = action_probability.numpy()[0]
+        print(action_probability)
         action = np.random.choice(self.action_space, p=action_probability)
 
         self.states.append(game_state)
@@ -84,13 +84,9 @@ class Core:
         :return: The total reward for the episode
         """
 
-        # TODO:
-        # 1) Use generate trajectory to run an episode and get states, actions, and rewards.
-        # 2) Compute discounted rewards.
-        # 3) Compute the loss from the model and run backpropagation on the model.
-
         with tf.GradientTape() as tape:
             discounted_rewards = self.discount(self.rewards)
+            print(discounted_rewards)
             loss = self.model.loss(tf.convert_to_tensor(self.states), tf.convert_to_tensor(self.actions), tf.convert_to_tensor(discounted_rewards))
 
         gradients = tape.gradient(loss, self.model.trainable_variables)

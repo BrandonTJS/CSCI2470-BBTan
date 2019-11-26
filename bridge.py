@@ -53,9 +53,9 @@ def new_transaction():
 			game_state_flat.extend(cleanLevelMap[i])
 
 		action = core.calculate_action(game_state_flat)
-		response = {'mouse_x': action.item(), "mouse_y": 300}
+		response = {'mouse_x': action.item(), "mouse_y": 470}
 		response_code = 200
-		print("Predicted Action: (" + str(action) + "," + str(300) + ")\n")
+		print("Predicted Action: (" + str(action) + "," + str(470) + ")\n")
 	else:
 		response = {'error': 'Invalid Game State'}
 		response_code = 500
