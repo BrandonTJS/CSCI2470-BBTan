@@ -135,6 +135,8 @@ function calc(value) {
 
 //my time calculator--------------------------------------------------------------------------------------------------
 function setTime(game) {
+  if (!ENABLE_GAME_TIME) return;
+
   if (game.gameTime <= 0){
     game.gameStatus = "gameOver";
   }
