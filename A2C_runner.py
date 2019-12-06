@@ -108,6 +108,7 @@ class A2CRunner:
         critic_loss_metric = tf.keras.metrics.Mean('critic_loss', dtype=tf.float32)
         total_loss_metric = tf.keras.metrics.Mean('total_loss', dtype=tf.float32)
         reward_metric = tf.keras.metrics.Mean('reward', dtype=tf.float32)
+        level_metric = tf.keras.metrics.Mean('level', dtype=tf.float32)
 
         with tf.GradientTape() as tape:
             discounted_rewards = self.discount(self.rewards)
@@ -122,6 +123,7 @@ class A2CRunner:
         critic_loss_metric(critic_loss)
         total_loss_metric(loss)
         reward_metric(sum(self.rewards))
+        level_metric(len(self.rewards) + 1)
 
         #Write metrics to file
         current_epoch = len(self.total_rewards)
@@ -130,6 +132,7 @@ class A2CRunner:
             tf.summary.scalar('critic_loss', critic_loss_metric.result(), step=current_epoch)
             tf.summary.scalar('total_loss', total_loss_metric.result(), step=current_epoch)
             tf.summary.scalar('reward', reward_metric.result(), step=current_epoch)
+            tf.summary.scalar('level', level_metric.result(), step=current_epoch)
 
         print("Episode Total Reward: {}".format(sum(self.rewards)))
         print("Loss: {}".format(loss))
@@ -144,6 +147,7 @@ class A2CRunner:
         critic_loss_metric.reset_states()
         total_loss_metric.reset_states()
         reward_metric.reset_states()
+        level_metric.reset_states()
 
     def print_total_rewards(self, num_previous_round=50):
         average = sum(self.total_rewards[-num_previous_round:]) / num_previous_round
