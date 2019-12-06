@@ -4,12 +4,18 @@ import hashlib
 from flask import Flask, request, render_template, jsonify, redirect, send_from_directory, make_response
 import random
 import numpy as np
-from core import *
+from selector import ModelType, ModelSelector
+
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app =  Flask(__name__, template_folder='BBTAN')
 app._static_folder ='BBTAN/static'
 
-core = Core(state_size=129, action_space=350)
+model_selector = ModelSelector(ModelType.A2C, 129, 25)
+model_selector.load_model()
+
 game_counter = 0
 
 @app.route('/')
@@ -26,36 +32,31 @@ def new_transaction():
 	tileMap = np.array(content['tileMap'])
 	mask = (tileMap == 1) | (tileMap == 2) | (tileMap == 3) | (tileMap == 4) | (tileMap == 5) | (tileMap == 12)
 	cleanLevelMap = np.multiply(content['levelMap'], mask)
-	#print("--- GAME STATE ---\n")
-	#print(content)
-	#print("\n")
-    
-	#AI code goes here
-	#x = random.randint(0,350)
-	#y = random.randint(60,60+450)
 
+	#Flatten game state
+	game_state_flat = []
+	game_state_flat.append(content['balls'])
+	game_state_flat.append(content['bot_x'])
+	game_state_flat.append(content['bot_y'])
+	for i in range(len(tileMap)):
+		game_state_flat.extend(tileMap[i])
+	for i in range(len(cleanLevelMap)):
+		game_state_flat.extend(cleanLevelMap[i])
+
+	#Event Handlers
 	if content['gameStatus'] == 'gameOver':
-		core.train()
+		model_selector.game_over_handler(game_state_flat)
 		game_counter += 1
-		if game_counter % 5 == 0:
-			core.print_total_rewards(num_previous_round=5)
+		if game_counter % 500 == 0:
+			model_selector.save_model()
 		print("Games Played: " + str(game_counter))
 		response = {'status': 'ok'}
 		response_code = 200
 	elif content['gameStatus'] == 'inGame':
-		game_state_flat = []
-		game_state_flat.append(content['balls'])
-		game_state_flat.append(content['bot_x'])
-		game_state_flat.append(content['bot_y'])
-		for i in range(len(tileMap)):
-			game_state_flat.extend(tileMap[i])
-		for i in range(len(cleanLevelMap)):
-			game_state_flat.extend(cleanLevelMap[i])
-
-		action = core.calculate_action(game_state_flat)
-		response = {'mouse_x': action.item(), "mouse_y": 470}
+		action = model_selector.game_action_handler(game_state_flat)
+		response = {'mouse_x': int(action.item())*14, "mouse_y": 470}
 		response_code = 200
-		print("Predicted Action: (" + str(action) + "," + str(470) + ")\n")
+		print("Predicted Action: (" + str(int(action.item())*14) + "," + str(470) + ")\n")
 	else:
 		response = {'error': 'Invalid Game State'}
 		response_code = 500
@@ -63,4 +64,4 @@ def new_transaction():
 	return jsonify(response), response_code
 
 
-app.run(debug=True, port=8000)
+app.run(debug=False, port=8000)
