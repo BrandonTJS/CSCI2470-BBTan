@@ -13,7 +13,7 @@ log.setLevel(logging.ERROR)
 app =  Flask(__name__, template_folder='BBTAN')
 app._static_folder ='BBTAN/static'
 
-model_selector = ModelSelector(ModelType.A2C, 129, 25)
+model_selector = ModelSelector(ModelType.A2C, 884, 25)
 model_selector.load_model()
 
 game_counter = 0
@@ -33,15 +33,19 @@ def new_transaction():
 	mask = (tileMap == 1) | (tileMap == 2) | (tileMap == 3) | (tileMap == 4) | (tileMap == 5) | (tileMap == 12)
 	cleanLevelMap = np.multiply(content['levelMap'], mask)
 
+	#Normalize game state variables
+	level = int(content['level'])
+	num_balls = content['balls'] / level
+	bot_x = content['bot_x'] / 350
+	tileMap = (np.arange(13) == tileMap[...,None]).astype(int).flatten() #normalize to one hot (13 tile types)
+	cleanLevelMap = np.array(cleanLevelMap / level).flatten()
+
 	#Flatten game state
 	game_state_flat = []
-	game_state_flat.append(content['balls'])
-	game_state_flat.append(content['bot_x'])
-	game_state_flat.append(content['bot_y'])
-	for i in range(len(tileMap)):
-		game_state_flat.extend(tileMap[i])
-	for i in range(len(cleanLevelMap)):
-		game_state_flat.extend(cleanLevelMap[i])
+	game_state_flat.append(num_balls)
+	game_state_flat.append(bot_x)
+	game_state_flat.extend(tileMap)
+	game_state_flat.extend(cleanLevelMap)
 
 	#Event Handlers
 	if content['gameStatus'] == 'gameOver':
