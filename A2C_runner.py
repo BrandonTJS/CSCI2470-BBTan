@@ -2,16 +2,22 @@ import os
 import sys
 import numpy as np
 import tensorflow as tf
-from reinforce_with_baseline import ReinforceWithBaseline
+from A2C_model import A2CModel
+from pylab import *
 
-class Core:
+class A2CRunner:
     def __init__(self, state_size, action_space):
         self.states = []
         self.actions = []
         self.rewards = []
         self.action_space = list(range(action_space))
-        self.model = ReinforceWithBaseline(state_size, action_space)
+        self.model = A2CModel(state_size, action_space)
         self.total_rewards = []
+
+        self.checkpoint_dir = './checkpoints/A2C'
+        checkpoint_prefix = os.path.join(self.checkpoint_dir, "ckpt")
+        self.checkpoint = tf.train.Checkpoint(model=self.model)
+        self.manager = tf.train.CheckpointManager(self.checkpoint, self.checkpoint_dir, max_to_keep=5)
 
     def visualize_data(self, total_rewards):
         """
@@ -58,16 +64,17 @@ class Core:
         in the episode
         """
 
-        
+        #print(game_state)
         action_probability = self.model.call(tf.convert_to_tensor([game_state]))
         action_probability = action_probability.numpy()[0]
-        print(action_probability)
+        #print(action_probability)
         action = np.random.choice(self.action_space, p=action_probability)
 
         self.states.append(game_state)
         self.actions.append(action)
-        incentive = game_state[66:].count(0)
-        self.rewards.append(0.63 + incentive/100.0)
+        #incentive = game_state[66:].count(0)
+        #self.rewards.append(0.63 + incentive/100.0)
+        self.rewards.append(1)
 
         return action
 
@@ -86,9 +93,9 @@ class Core:
 
         with tf.GradientTape() as tape:
             discounted_rewards = self.discount(self.rewards)
-            print(discounted_rewards)
+            #print(discounted_rewards)
             loss = self.model.loss(tf.convert_to_tensor(self.states), tf.convert_to_tensor(self.actions), tf.convert_to_tensor(discounted_rewards))
-
+            
         gradients = tape.gradient(loss, self.model.trainable_variables)
         self.model.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
         print("Episode Total Reward: {}".format(sum(self.rewards)))
@@ -107,4 +114,16 @@ class Core:
         #Visualize your rewards.
         #visualize_data(self.total_rewards)
 
-
+    def save(self):
+        print('Saving Checkpoint')
+        self.manager.save()
+    
+    def load(self):
+        if os.path.exists(self.checkpoint_dir):
+            #Check if chkpts exists
+            num_of_files = len(os.listdir(self.checkpoint_dir))
+            if num_of_files > 0:
+                print('Restoring Checkpoint')
+                self.checkpoint.restore(self.manager.latest_checkpoint)
+                #Sanity check
+                #print(self.model.call(tf.convert_to_tensor([range(129)])))

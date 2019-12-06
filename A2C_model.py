@@ -9,7 +9,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 # WITH THE AUTOGRADER AND RECEIVING A LOWER GRADE.
 
 
-class ReinforceWithBaseline(tf.keras.Model):
+class A2CModel(tf.keras.Model):
     def __init__(self, state_size, num_actions):
         """
         The ReinforceWithBaseline class that inherits from tf.keras.Model.
@@ -22,22 +22,22 @@ class ReinforceWithBaseline(tf.keras.Model):
                            but it can be used as the input size for your first dense layer.
         :param num_actions: number of actions in an environment
         """
-        super(ReinforceWithBaseline, self).__init__()
+        super(A2CModel, self).__init__()
         self.num_actions = num_actions
 
         #actor network
-        self.dense1 = tf.keras.layers.Dense(48, input_dim=state_size, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
-        self.dense5 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
-        self.dense6 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
-        self.dense7 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
-        self.dense2 = tf.keras.layers.Dense(num_actions, activation='softmax', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
+        self.a1 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.a2 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.a3 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.a4 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.a5 = tf.keras.layers.Dense(num_actions, activation='softmax', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
 
         #critic network
-        self.dense3 = tf.keras.layers.Dense(48, input_dim=state_size, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
-        self.dense8 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_uniform_initializer())
-        self.dense4 = tf.keras.layers.Dense(1, use_bias=True, kernel_initializer=tf.random_uniform_initializer())
+        self.c1 = tf.keras.layers.Dense(128, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.c2 = tf.keras.layers.Dense(128, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.c3 = tf.keras.layers.Dense(1, use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
 
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.002)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
         print('INIT')
 
     @tf.function
@@ -52,11 +52,11 @@ class ReinforceWithBaseline(tf.keras.Model):
         :return: A [episode_length,num_actions] matrix representing the probability distribution over actions
         of each state in the episode
         """
-        output = self.dense1(states)
-        output = self.dense5(output)
-        output = self.dense6(output)
-        output = self.dense7(output)
-        output = self.dense2(output)
+        output = self.a1(states)
+        output = self.a2(output)
+        output = self.a3(output)
+        output = self.a4(output)
+        output = self.a5(output)
 
         return output
 
@@ -69,9 +69,9 @@ class ReinforceWithBaseline(tf.keras.Model):
         of an episode
         :return: A [episode_length] matrix representing the value of each state
         """
-        output = self.dense3(states)
-        output = self.dense8(output)
-        output = self.dense4(output)
+        output = self.c1(states)
+        output = self.c2(output)
+        output = self.c3(output)
 
         return output
 
@@ -95,15 +95,29 @@ class ReinforceWithBaseline(tf.keras.Model):
         probabilities = self.call(states)
         actions_reshape = tf.stack([range(len(actions)), actions], axis=1)
         action_probabilities = tf.gather_nd(probabilities, actions_reshape)
-        action_probabilities = tf.math.negative(tf.math.log(action_probabilities))
-        actor_loss_element = tf.stop_gradient(tf.cast(tf.subtract(discounted_rewards, self.value_function(states)), dtype=tf.float32))
-        element_multiply = tf.multiply(action_probabilities, actor_loss_element)
-        actor_loss = tf.reduce_sum(element_multiply)
+        action_probabilities = -tf.math.log(tf.clip_by_value(action_probabilities, 1e-7, 1))
+        test = tf.squeeze(self.value_function(states))
+        advantage = tf.subtract(discounted_rewards, test)
+        advantage = tf.cast(advantage, dtype=tf.float32)
+        advantage = tf.stop_gradient(advantage)
+        element_multiply = tf.multiply(action_probabilities, advantage)
+        actor_loss = tf.reduce_mean(tf.reduce_sum(element_multiply))
 
-        critic_loss_element = tf.subtract(discounted_rewards, self.value_function(states))
+        # advantage = tf.subtract(discounted_rewards, self.value_function(states))
+        # advantage = tf.cast(advantage, dtype=tf.float32)
+        # advantage = tf.stop_gradient(advantage)
+
+        # action_one_hot = tf.one_hot(actions, self.num_actions, dtype=tf.float32)
+        # neg_log_policy = -tf.math.log(tf.clip_by_value(probabilities, 1e-7, 1))
+        # actor_loss = tf.reduce_mean(tf.reduce_sum(neg_log_policy * action_one_hot, axis=1) * actor_loss_element)
+
+        critic_loss_element = tf.subtract(discounted_rewards, tf.squeeze(self.value_function(states)))
         critic_loss_element_square = tf.square(critic_loss_element)
-        critic_loss = tf.reduce_sum(critic_loss_element_square)
+        critic_loss = tf.reduce_mean(tf.reduce_sum(critic_loss_element_square))
+
+        print('Actor Loss: ' + str(actor_loss))
+        print('Critic Loss: ' + str(critic_loss))
 
         weighted_actor_loss = tf.multiply(actor_loss, 1)
         weighted_critic_loss = tf.multiply(critic_loss, 0.5)
-        return tf.add(weighted_actor_loss, weighted_critic_loss)
+        return weighted_actor_loss + weighted_critic_loss
