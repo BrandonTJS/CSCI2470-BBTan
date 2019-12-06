@@ -264,17 +264,19 @@ class Ball {
   }
 
   changeDirectionPowerSplit() {
-    let angle = getRandomFloat(Math.PI/2,0);
-    let dx = Math.cos(angle) * BALL_VELOCITY;
-    let dy = Math.sin(angle) * BALL_VELOCITY;
-    this.dx = dx;
-    let random = getRandomNumber(4,3);
-    this.ballSound.play('powerUpSplit');
-    //for negative dx random value;
-    if(random == 3){
-      this.dx *= -1;
+    if(this.visible){
+      let angle = getRandomFloat(Math.PI/2,0);
+      let dx = Math.cos(angle) * BALL_VELOCITY;
+      let dy = Math.sin(angle) * BALL_VELOCITY;
+      this.dx = dx;
+      let random = getRandomNumber(4,3);
+      this.ballSound.play('powerUpSplit');
+      //for negative dx random value;
+      if(random == 3){
+        this.dx *= -1;
+      }
+      this.dy = dy;
     }
-    this.dy = dy;
   }
 
   laserHorizontal(obstacle,game) {
