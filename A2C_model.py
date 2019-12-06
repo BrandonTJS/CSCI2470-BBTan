@@ -101,7 +101,7 @@ class A2CModel(tf.keras.Model):
         advantage = tf.cast(advantage, dtype=tf.float32)
         advantage = tf.stop_gradient(advantage)
         element_multiply = tf.multiply(action_probabilities, advantage)
-        actor_loss = tf.reduce_mean(tf.reduce_sum(element_multiply))
+        actor_loss = tf.reduce_mean(element_multiply)
 
         # advantage = tf.subtract(discounted_rewards, self.value_function(states))
         # advantage = tf.cast(advantage, dtype=tf.float32)
@@ -113,7 +113,7 @@ class A2CModel(tf.keras.Model):
 
         critic_loss_element = tf.subtract(discounted_rewards, tf.squeeze(self.value_function(states)))
         critic_loss_element_square = tf.square(critic_loss_element)
-        critic_loss = tf.reduce_mean(tf.reduce_sum(critic_loss_element_square))
+        critic_loss = tf.reduce_mean(critic_loss_element_square)
 
         print('Actor Loss: ' + str(actor_loss))
         print('Critic Loss: ' + str(critic_loss))
