@@ -76,9 +76,17 @@ class A2CRunner:
 
         self.states.append(game_state)
         self.actions.append(action)
-        #incentive = game_state[66:].count(0)
-        #self.rewards.append(0.63 + incentive/100.0)
-        self.rewards.append(1)
+        level_map = game_state[821:] #1 + 1 + 819 | ball, bot_x, tile_map
+        num_non_block = level_map.count(0) 
+        incentive = num_non_block/100.0
+        disincentive = 0
+        for row in reversed(range(9)): #9 rows in level_map
+            for column in range(7): #7 columns in level_map
+                value = level_map[row*7 + column]
+                if value  != 0:
+                    disincentive += row
+        disincentive = disincentive/100.0
+        self.rewards.append(1 + incentive - disincentive)
 
         return action
 
