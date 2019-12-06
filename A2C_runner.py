@@ -19,6 +19,10 @@ class A2CRunner:
         self.checkpoint = tf.train.Checkpoint(model=self.model)
         self.manager = tf.train.CheckpointManager(self.checkpoint, self.checkpoint_dir, max_to_keep=5)
 
+        current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        metrics_log_dir = 'logs/gradient_tape/' + current_time + '/metrics'
+        self.metric_summary_writer = tf.summary.create_file_writer(metrics_log_dir)
+
     def visualize_data(self, total_rewards):
         """
         Takes in array of rewards from each episode, visualizes reward over episodes.
@@ -91,13 +95,34 @@ class A2CRunner:
         :return: The total reward for the episode
         """
 
+        # Define our metrics
+        actor_loss_metric = tf.keras.metrics.Mean('actor_loss', dtype=tf.float32)
+        critic_loss_metric = tf.keras.metrics.Mean('critic_loss', dtype=tf.float32)
+        total_loss_metric = tf.keras.metrics.Mean('total_loss', dtype=tf.float32)
+        reward_metric = tf.keras.metrics.Mean('reward', dtype=tf.float32)
+
         with tf.GradientTape() as tape:
             discounted_rewards = self.discount(self.rewards)
             #print(discounted_rewards)
-            loss = self.model.loss(tf.convert_to_tensor(self.states), tf.convert_to_tensor(self.actions), tf.convert_to_tensor(discounted_rewards))
+            loss, actor_loss, critic_loss = self.model.loss(tf.convert_to_tensor(self.states), tf.convert_to_tensor(self.actions), tf.convert_to_tensor(discounted_rewards))
             
         gradients = tape.gradient(loss, self.model.trainable_variables)
         self.model.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
+
+        #Log metrics
+        actor_loss_metric(actor_loss)
+        critic_loss_metric(critic_loss)
+        total_loss_metric(loss)
+        reward_metric(sum(self.rewards))
+
+        #Write metrics to file
+        current_epoch = len(self.total_rewards)
+        with self.metric_summary_writer.as_default():
+            tf.summary.scalar('actor_loss', actor_loss_metric.result(), step=current_epoch)
+            tf.summary.scalar('critic_loss', critic_loss_metric.result(), step=current_epoch)
+            tf.summary.scalar('total_loss', total_loss_metric.result(), step=current_epoch)
+            tf.summary.scalar('reward', reward_metric.result(), step=current_epoch)
+
         print("Episode Total Reward: {}".format(sum(self.rewards)))
         print("Loss: {}".format(loss))
         self.total_rewards.append(sum(self.rewards)) 
@@ -106,6 +131,11 @@ class A2CRunner:
         self.states = []
         self.actions = []
         self.rewards = []
+
+        actor_loss_metric.reset_states()
+        critic_loss_metric.reset_states()
+        total_loss_metric.reset_states()
+        reward_metric.reset_states()
 
     def print_total_rewards(self, num_previous_round=50):
         average = sum(self.total_rewards[-num_previous_round:]) / num_previous_round

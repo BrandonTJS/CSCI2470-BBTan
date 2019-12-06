@@ -120,4 +120,4 @@ class A2CModel(tf.keras.Model):
 
         weighted_actor_loss = tf.multiply(actor_loss, 1)
         weighted_critic_loss = tf.multiply(critic_loss, 0.5)
-        return weighted_actor_loss + weighted_critic_loss
+        return weighted_actor_loss + weighted_critic_loss, actor_loss, critic_loss
