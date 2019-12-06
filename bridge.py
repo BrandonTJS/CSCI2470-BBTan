@@ -13,7 +13,7 @@ log.setLevel(logging.ERROR)
 app =  Flask(__name__, template_folder='BBTAN')
 app._static_folder ='BBTAN/static'
 
-model_selector = ModelSelector(ModelType.A2C, 884, 25)
+model_selector = ModelSelector(ModelType.A2C, 1234, 25)
 model_selector.load_model()
 
 game_counter = 0
@@ -35,15 +35,17 @@ def new_transaction():
 
 	#Normalize game state variables
 	level = int(content['level'])
+	bot_x = content['bot_x']
 	num_balls = content['balls'] / level
-	bot_x = content['bot_x'] / 350
+	bot_x_one_hot = np.zeros(351)
+	np.put(bot_x_one_hot, bot_x, 1)
 	tileMap = (np.arange(13) == tileMap[...,None]).astype(int).flatten() #normalize to one hot (13 tile types)
 	cleanLevelMap = np.array(cleanLevelMap / level).flatten()
 
 	#Flatten game state
 	game_state_flat = []
 	game_state_flat.append(num_balls)
-	game_state_flat.append(bot_x)
+	game_state_flat.extend(bot_x_one_hot)
 	game_state_flat.extend(tileMap)
 	game_state_flat.extend(cleanLevelMap)
 

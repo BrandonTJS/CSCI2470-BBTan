@@ -76,7 +76,7 @@ class A2CRunner:
 
         self.states.append(game_state)
         self.actions.append(action)
-        level_map = game_state[821:] #1 + 1 + 819 | ball, bot_x, tile_map
+        level_map = game_state[1171:] #1 + 351 + 819 | ball, bot_x, tile_map
         num_non_block = level_map.count(0) 
         incentive = num_non_block/100.0
         disincentive = 0
