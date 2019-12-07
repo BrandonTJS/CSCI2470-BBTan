@@ -26,15 +26,13 @@ class A2CModel(tf.keras.Model):
         self.num_actions = num_actions
 
         #actor network
-        self.a1 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
-        self.a2 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
-        self.a3 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
-        self.a4 = tf.keras.layers.Dense(48, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
-        self.a5 = tf.keras.layers.Dense(num_actions, activation='softmax', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.a1 = tf.keras.layers.Dense(512, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.a2 = tf.keras.layers.Dense(512, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.a3 = tf.keras.layers.Dense(num_actions, activation='softmax', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
 
         #critic network
-        self.c1 = tf.keras.layers.Dense(128, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
-        self.c2 = tf.keras.layers.Dense(128, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.c1 = tf.keras.layers.Dense(512, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
+        self.c2 = tf.keras.layers.Dense(512, activation='relu', use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
         self.c3 = tf.keras.layers.Dense(1, use_bias=True, kernel_initializer=tf.random_normal_initializer(stddev=0.02))
 
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
@@ -55,8 +53,6 @@ class A2CModel(tf.keras.Model):
         output = self.a1(states)
         output = self.a2(output)
         output = self.a3(output)
-        output = self.a4(output)
-        output = self.a5(output)
 
         return output
 
@@ -96,8 +92,7 @@ class A2CModel(tf.keras.Model):
         actions_reshape = tf.stack([range(len(actions)), actions], axis=1)
         action_probabilities = tf.gather_nd(probabilities, actions_reshape)
         action_probabilities = -tf.math.log(tf.clip_by_value(action_probabilities, 1e-7, 1))
-        test = tf.squeeze(self.value_function(states))
-        advantage = tf.subtract(discounted_rewards, test)
+        advantage = tf.subtract(discounted_rewards, tf.squeeze(self.value_function(states)))
         advantage = tf.cast(advantage, dtype=tf.float32)
         advantage = tf.stop_gradient(advantage)
         element_multiply = tf.multiply(action_probabilities, advantage)
