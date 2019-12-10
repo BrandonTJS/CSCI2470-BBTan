@@ -26,9 +26,9 @@
    ```yaml
    [normalized_balls normalized_bot_x normalized_tileMap levelMap]
    index 0: balls
-   index 1-352: bot_x
-   index 353-1172: tileMap
-   index 1173-1236: levelMap
+   index 1-351: bot_x
+   index 352-1170: tileMap
+   index 1171-1233: levelMap
    ```
 - Model Selector: `selector.py`
 - A2C Runner: `A2C_runner.py`
