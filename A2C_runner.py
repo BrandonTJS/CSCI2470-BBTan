@@ -22,6 +22,9 @@ class A2CRunner:
         current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         metrics_log_dir = 'logs/gradient_tape/' + current_time + '/metrics'
         self.metric_summary_writer = tf.summary.create_file_writer(metrics_log_dir)
+        
+        self.avg_grad = None
+        self.grad_count = 0
 
     def visualize_data(self, total_rewards):
         """
@@ -86,7 +89,7 @@ class A2CRunner:
                 if value  != 0:
                     disincentive += row
         disincentive = disincentive/100.0
-        self.rewards.append(1 + incentive - disincentive)
+        self.rewards.append(2 + incentive - disincentive)
 
         return action
 
@@ -116,7 +119,16 @@ class A2CRunner:
             loss, actor_loss, critic_loss = self.model.loss(tf.convert_to_tensor(self.states), tf.convert_to_tensor(self.actions), tf.convert_to_tensor(discounted_rewards))
             
         gradients = tape.gradient(loss, self.model.trainable_variables)
-        self.model.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
+        if self.grad_count == 0:
+            self.avg_grad = gradients
+        else:
+            self.avg_grad = [tf.add(x[0], x[1]) for x in zip(self.avg_grad, gradients)]
+        self.grad_count += 1
+        if self.grad_count % 32 == 0:
+            print('Applying Gradient')
+            self.avg_grad = [x/32 for x in self.avg_grad]
+            self.model.optimizer.apply_gradients(zip(self.avg_grad, self.model.trainable_variables))
+            self.grad_count = 0
 
         #Log metrics
         actor_loss_metric(actor_loss)
