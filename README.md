@@ -24,16 +24,16 @@
    ```
    - Web bridge cleans and flattens game state and sends it to Core
    ```yaml
-   [balls, bot_x, bot_y, tileMap, levelMap]
+   [normalized_balls normalized_bot_x normalized_tileMap levelMap]
    index 0: balls
-   index 1: bot_x
-   index 2: bot_y
-   index 3-65: tileMap
-   index 66-128: levelMap
+   index 1-352: bot_x
+   index 353-1172: tileMap
+   index 1173-1236: levelMap
    ```
-- Core Logic: `core.py`
-    - Core logic for training and calling model 
-- A2C Model: `reinforce_with_baseline.py`
+- Model Selector: `selector.py`
+- A2C Runner: `A2C_runner.py`
+	- Contains core logic for training
+- A2C Model: `A2C_model.py`
 
 ## Instructions
 
